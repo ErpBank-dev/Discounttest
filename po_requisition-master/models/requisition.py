@@ -21,7 +21,7 @@ class Requisition(models.Model):
     _name = "po.requisition"
     _inherit = ['mail.thread',]
 
-    @api.multi
+
     def _po_count(self):
         attach = self.env['purchase.order']
         for po in self:
@@ -57,7 +57,7 @@ class Requisition(models.Model):
     order_line = fields.One2many('requisition.order.line', 'order_id', string='Order Lines', states={
                                  'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, track_visibility='always')
 
-    @api.multi
+
     def action_approve_po_requisition(self):
         # po_data = {
         #     'requisition_number': str(self.name),
@@ -120,12 +120,10 @@ class Requisition(models.Model):
                 })
         return True
 
-    @api.multi
     def cancel(self):
         for rec in self:
             rec.write({'state':'cancel'})
 
-    @api.multi
     def unlink(self):
         for rec in self:
             if rec.state in ('approve','cancel'):
